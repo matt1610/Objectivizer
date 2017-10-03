@@ -7,13 +7,13 @@ namespace Objectivizer.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class initialMigration : IMigrationMetadata
+    public sealed partial class UserOrgs : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(initialMigration));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(UserOrgs));
         
         string IMigrationMetadata.Id
         {
-            get { return "201708281247589_initial Migration"; }
+            get { return "201708311257147_User Orgs"; }
         }
         
         string IMigrationMetadata.Source

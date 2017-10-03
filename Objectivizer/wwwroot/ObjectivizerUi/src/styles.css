@@ -1,0 +1,11 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+html,body {
+    margin: 0;
+}
+
+
+.example-fill-remaining-space {
+    flex: 1 1 auto;
+}
+

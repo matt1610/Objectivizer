@@ -3,10 +3,40 @@ namespace Objectivizer.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initialMigration : DbMigration
+    public partial class OrganisationModel : DbMigration
     {
         public override void Up()
         {
+            CreateTable(
+                "dbo.Objectives",
+                c => new
+                    {
+                        ObjectiveId = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Description = c.String(),
+                        Weight = c.Int(nullable: false),
+                        OrganisationId = c.Int(nullable: false),
+                        Completed = c.Boolean(nullable: false),
+                        Comments = c.String(),
+                        Creator = c.String(),
+                    })
+                .PrimaryKey(t => t.ObjectiveId)
+                .ForeignKey("dbo.Organisations", t => t.OrganisationId, cascadeDelete: false)
+                .Index(t => t.OrganisationId);
+            
+            CreateTable(
+                "dbo.Organisations",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        ParentOrgId = c.Int(),
+                        Name = c.String(nullable: false),
+                        Weight = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Organisations", t => t.ParentOrgId)
+                .Index(t => t.ParentOrgId);
+            
             CreateTable(
                 "dbo.AspNetRoles",
                 c => new
@@ -25,8 +55,8 @@ namespace Objectivizer.Migrations
                         RoleId = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => new { t.UserId, t.RoleId })
-                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: false)
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: false)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
             
@@ -60,7 +90,7 @@ namespace Objectivizer.Migrations
                         ClaimValue = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: false)
                 .Index(t => t.UserId);
             
             CreateTable(
@@ -72,7 +102,7 @@ namespace Objectivizer.Migrations
                         UserId = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: false)
                 .Index(t => t.UserId);
             
         }
@@ -83,17 +113,23 @@ namespace Objectivizer.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.Organisations", "ParentOrgId", "dbo.Organisations");
+            DropForeignKey("dbo.Objectives", "OrganisationId", "dbo.Organisations");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.Organisations", new[] { "ParentOrgId" });
+            DropIndex("dbo.Objectives", new[] { "OrganisationId" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.Organisations");
+            DropTable("dbo.Objectives");
         }
     }
 }

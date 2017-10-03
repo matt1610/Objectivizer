@@ -14,5 +14,8 @@ namespace Objectivizer.Models
         public string Description { get; set; }
         public int Weight { get; set; }
         public int OrganisationId { get; set; }
+        public bool Completed { get; set; }
+        public string Comments { get; set; }
+        public string Creator { get; set; }
     }
 }

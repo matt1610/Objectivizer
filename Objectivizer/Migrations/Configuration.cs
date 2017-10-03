@@ -32,47 +32,100 @@ namespace Objectivizer.Migrations
             //    );
             //
 
+            //if (System.Diagnostics.Debugger.IsAttached == false)
+            //{
+            //    System.Diagnostics.Debugger.Launch();
+            //}
+
             try
             {
 
-                Level level1 = new Level()
+                //Level level1 = new Level()
+                //{
+                //    Name = "Derivco",
+                //    Groups = new List<Group>(),
+                //    Objectives = new List<Objective>()
+                //};
+
+                Organisation derivco = new Organisation()
                 {
                     Name = "Derivco",
-                    Groups = new List<Group>(),
-                    Objectives = new List<Objective>()
+                    Organisations = new List<Organisation>(),
+                    Objectives = new List<Objective>(),
+                    Weight = Weight.Company
                 };
 
-                Group group1 = new Group()
+                Organisation platform = new Organisation()
                 {
                     Name = "Platform",
-                    Teams = new List<Team>(),
-                    Objectives = new List<Objective>()
+                    Organisations = new List<Organisation>(),
+                    Objectives = new List<Objective>(),
+                    Weight = Weight.Group
                 };
 
-                Group group2 = new Group()
+                Organisation casino = new Organisation()
                 {
                     Name = "Casino",
-                    Teams = new List<Team>(),
-                    Objectives = new List<Objective>()
+                    Organisations = new List<Organisation>(),
+                    Objectives = new List<Objective>(),
+                    Weight = Weight.Group
                 };
 
-                Team moneyOut = new Team()
+                Organisation moneysout = new Organisation()
                 {
                     Name = "Money Out",
-                    Objectives = new List<Objective>()
+                    Organisations = new List<Organisation>(),
+                    Objectives = new List<Objective>(),
+                    Weight = Weight.Team
                 };
 
-                Team lobby = new Team()
+                Organisation lobby = new Organisation()
                 {
                     Name = "Lobby",
-                    Objectives = new List<Objective>()
+                    Organisations = new List<Organisation>(),
+                    Objectives = new List<Objective>(),
+                    Weight = Weight.Team
                 };
 
-                Team swift = new Team()
+                Organisation swift = new Organisation()
                 {
                     Name = "Swift",
-                    Objectives = new List<Objective>()
+                    Organisations = new List<Organisation>(),
+                    Objectives = new List<Objective>(),
+                    Weight = Weight.Team
                 };
+
+                //Group group1 = new Group()
+                //{
+                //    Name = "Platform",
+                //    Teams = new List<Team>(),
+                //    Objectives = new List<Objective>()
+                //};
+
+                //Group group2 = new Group()
+                //{
+                //    Name = "Casino",
+                //    Teams = new List<Team>(),
+                //    Objectives = new List<Objective>()
+                //};
+
+                //Team moneyOut = new Team()
+                //{
+                //    Name = "Money Out",
+                //    Objectives = new List<Objective>()
+                //};
+
+                //Team lobby = new Team()
+                //{
+                //    Name = "Lobby",
+                //    Objectives = new List<Objective>()
+                //};
+
+                //Team swift = new Team()
+                //{
+                //    Name = "Swift",
+                //    Objectives = new List<Objective>()
+                //};
 
                 Objective levelObjective = new Objective()
                 {
@@ -138,8 +191,6 @@ namespace Objectivizer.Migrations
                     Weight = 24
                 };
 
-
-
                 Objective swiftObjective1 = new Objective()
                 {
                     Description = "Deploy Swift Everywhere",
@@ -161,20 +212,20 @@ namespace Objectivizer.Migrations
                     Weight = 10
                 };
 
-                level1.Groups.Add(group1);
-                level1.Groups.Add(group2);
-                level1.Objectives.Add(levelObjective);
+                derivco.Organisations.Add(platform);
+                derivco.Organisations.Add(casino);
+                derivco.Objectives.Add(levelObjective);
 
-                group1.Teams.Add(moneyOut);
-                group1.Teams.Add(lobby);
-                group1.Teams.Add(swift);
+                platform.Organisations.Add(moneysout);
+                platform.Organisations.Add(lobby);
+                platform.Organisations.Add(swift);
 
-                group1.Objectives.Add(groupObjective);
-                group1.Objectives.Add(groupObjective2);
+                platform.Objectives.Add(groupObjective);
+                platform.Objectives.Add(groupObjective2);
 
-                moneyOut.Objectives.Add(moneyOutObjective1);
-                moneyOut.Objectives.Add(moneyOutObjective2);
-                moneyOut.Objectives.Add(moneyOutObjective3);
+                moneysout.Objectives.Add(moneyOutObjective1);
+                moneysout.Objectives.Add(moneyOutObjective2);
+                moneysout.Objectives.Add(moneyOutObjective3);
 
                 lobby.Objectives.Add(lobbyObjective1);
                 lobby.Objectives.Add(lobbyObjective2);
@@ -183,10 +234,18 @@ namespace Objectivizer.Migrations
                 swift.Objectives.Add(swiftObjective1);
                 swift.Objectives.Add(swiftObjective2);
                 swift.Objectives.Add(swiftObjective3);
-                
-                context.Levels.AddOrUpdate(l => l.LevelId, level1);
-                context.Groups.AddOrUpdate(g => g.GroupId, group1);
-                context.Teams.AddOrUpdate(t => t.TeamId, moneyOut);
+
+                if (!context.Organisations.Any())
+                {
+                    context.Organisations.AddOrUpdate(l => l.Name, derivco);
+                    context.Organisations.AddOrUpdate(l => l.Name, platform);
+                    context.Organisations.AddOrUpdate(l => l.Name, casino);
+                    context.Organisations.AddOrUpdate(l => l.Name, moneysout);
+                    context.Organisations.AddOrUpdate(l => l.Name, lobby);
+                    context.Organisations.AddOrUpdate(l => l.Name, swift);
+
+                    context.Users.FirstOrDefault().Organisations = new[] { 1, 2, 3 };
+                }
 
                 context.SaveChanges();
 

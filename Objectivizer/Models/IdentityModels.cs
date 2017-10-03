@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -17,6 +18,8 @@ namespace Objectivizer.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public int[] Organisations { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -26,9 +29,10 @@ namespace Objectivizer.Models
         {
         }
 
-        public DbSet<Level> Levels { get; set; }
-        public DbSet<Group> Groups { get; set; }
-        public DbSet<Team> Teams { get; set; }
+        //public DbSet<Level> Levels { get; set; }
+        //public DbSet<Group> Groups { get; set; }
+        //public DbSet<Team> Teams { get; set; }
+        public DbSet<Organisation> Organisations { get; set; }
         public DbSet<Objective> Objectives { get; set; }
         
         public static ApplicationDbContext Create()
